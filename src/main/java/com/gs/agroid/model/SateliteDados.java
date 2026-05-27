@@ -1,10 +1,16 @@
 package com.gs.agroid.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_SATELITE_DADOS")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SateliteDados {
 
     @Id
@@ -24,95 +30,4 @@ public class SateliteDados {
 
     @Column(name = "data_coleta", nullable = false)
     private LocalDateTime timestamp;
-
-    public SateliteDados() {}
-
-    public SateliteDados(Long id, Double umidadePrevista, String clima, String regiao, LocalDateTime timestamp) {
-        this.id = id;
-        this.umidadePrevista = umidadePrevista;
-        this.clima = clima;
-        this.regiao = regiao;
-        this.timestamp = timestamp;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Long id;
-        private Double umidadePrevista;
-        private String clima;
-        private String regiao;
-        private LocalDateTime timestamp;
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder umidadePrevista(Double umidadePrevista) {
-            this.umidadePrevista = umidadePrevista;
-            return this;
-        }
-
-        public Builder clima(String clima) {
-            this.clima = clima;
-            return this;
-        }
-
-        public Builder regiao(String regiao) {
-            this.regiao = regiao;
-            return this;
-        }
-
-        public Builder timestamp(LocalDateTime timestamp) {
-            this.timestamp = timestamp;
-            return this;
-        }
-
-        public SateliteDados build() {
-            return new SateliteDados(id, umidadePrevista, clima, regiao, timestamp);
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getUmidadePrevista() {
-        return umidadePrevista;
-    }
-
-    public void setUmidadePrevista(Double umidadePrevista) {
-        this.umidadePrevista = umidadePrevista;
-    }
-
-    public String getClima() {
-        return clima;
-    }
-
-    public void setClima(String clima) {
-        this.clima = clima;
-    }
-
-    public String getRegiao() {
-        return regiao;
-    }
-
-    public void setRegiao(String regiao) {
-        this.regiao = regiao;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }
