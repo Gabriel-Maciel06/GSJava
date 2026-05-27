@@ -84,13 +84,13 @@ Para contribuir com o AgroID, siga estas etapas:
 
 Agradecemos às seguintes pessoas que contribuíram para este projeto acadêmico:
 
-| [<img src="https://github.com/Gabriel-Maciel06.png" width="100px;" alt="Foto do Gabriel Maciel"/><br><sub><b>Gabriel Maciel</b></sub>](https://github.com/Gabriel-Maciel06) | [<img src="https://avatars.githubusercontent.com/u/14902636?v=4" width="100px;" alt="Foto da Vitória Rodrigues"/><br><sub><b>Vitória Rodrigues</b></sub>](#) | [<img src="https://avatars.githubusercontent.com/u/1903332?v=4" width="100px;" alt="Foto do Augusto Bonomo"/><br><sub><b>Augusto Bonomo</b></sub>](#) |
+| [<img src="assets/gabriel.png" width="100px;" alt="Foto do Gabriel Maciel"/><br><sub><b>Gabriel Maciel</b></sub>](https://github.com/Gabriel-Maciel06) | [<img src="assets/vitoria.jpg" width="100px;" alt="Foto da Vitória Rodrigues"/><br><sub><b>Vitória Rodrigues</b></sub>](#) | [<img src="assets/augusto.jpg" width="100px;" alt="Foto do Augusto Bonomo"/><br><sub><b>Augusto Bonomo</b></sub>](#) |
 | :---: | :---: | :---: |
 | **RM562795** | **RM565160** | **RM565155** |
 
-| [<img src="https://avatars.githubusercontent.com/u/120023?v=4" width="100px;" alt="Foto do Thomas Fontes"/><br><sub><b>Thomas Fontes</b></sub>](#) | [<img src="https://avatars.githubusercontent.com/u/104104?v=4" width="100px;" alt="Foto do Matheus Molina"/><br><sub><b>Matheus Molina</b></sub>](#) |
+| [<img src="assets/matheus.jpg" width="100px;" alt="Foto do Matheus Molina"/><br><sub><b>Matheus Molina</b></sub>](#) | [<img src="assets/thomas.jpg" width="100px;" alt="Foto do Thomas Fontes"/><br><sub><b>Thomas Fontes</b></sub>](#) |
 | :---: | :---: |
-| **RM562254** | **RM563399** |
+| **RM563399** | **RM562254** |
 
 ---
 
