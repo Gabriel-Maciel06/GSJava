@@ -1,0 +1,81 @@
+package com.gs.agroid.service;
+
+import com.gs.agroid.dto.SensorRequestDto;
+import com.gs.agroid.dto.SensorResponseDto;
+import com.gs.agroid.exception.ResourceNotFoundException;
+import com.gs.agroid.model.*;
+import com.gs.agroid.repository.PropriedadeRepository;
+import com.gs.agroid.repository.SensorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class SensorService {
+
+    @Autowired
+    private SensorRepository sensorRepository;
+
+    @Autowired
+    private PropriedadeRepository propriedadeRepository;
+
+    @Transactional
+    public SensorResponseDto create(SensorRequestDto dto) {
+        Propriedade propriedade = propriedadeRepository.findById(dto.propriedadeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Propriedade não encontrada com ID: " + dto.propriedadeId()));
+
+        Sensor sensor;
+        if ("UMIDADE".equalsIgnoreCase(dto.tipoSensor())) {
+            sensor = SensorUmidade.builder()
+                    .modelo(dto.modelo())
+                    .status(dto.status().toUpperCase())
+                    .propriedade(propriedade)
+                    .build();
+        } else if ("LUMINOSIDADE".equalsIgnoreCase(dto.tipoSensor())) {
+            sensor = SensorLuminosidade.builder()
+                    .modelo(dto.modelo())
+                    .status(dto.status().toUpperCase())
+                    .propriedade(propriedade)
+                    .build();
+        } else {
+            throw new IllegalArgumentException("Tipo de sensor inválido: " + dto.tipoSensor());
+        }
+
+        sensor = sensorRepository.save(sensor);
+        return convertToDto(sensor);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SensorResponseDto> findAll() {
+        return sensorRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SensorResponseDto> findByPropriedade(Long propriedadeId) {
+        return sensorRepository.findByPropriedadeId(propriedadeId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public SensorResponseDto findById(Long id) {
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor não encontrado com ID: " + id));
+        return convertToDto(sensor);
+    }
+
+    public SensorResponseDto convertToDto(Sensor s) {
+        return SensorResponseDto.builder()
+                .id(s.getId())
+                .tipoSensor(s.getTipoSensor())
+                .modelo(s.getModelo())
+                .status(s.getStatus())
+                .propriedadeId(s.getPropriedade().getId())
+                .build();
+    }
+}
