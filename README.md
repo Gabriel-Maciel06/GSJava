@@ -245,7 +245,7 @@ erDiagram
     }
 
     TB_LEITURA {
-        NUMBER id_sensor PK_FK
+        NUMBER id_sensor PK,FK
         TIMESTAMP data_leitura PK
         NUMBER valor
     }
