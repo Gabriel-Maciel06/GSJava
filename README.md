@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🌱 AgroID — Monitoramento Agrícola Inteligente
 
@@ -882,4 +882,3 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto acadêmico
 ## 📝 Licença
 
 Este projeto está sob licença acadêmica da FIAP. Veja o arquivo de licença para mais detalhes.
-]]>
