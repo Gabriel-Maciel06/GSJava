@@ -1,84 +1,99 @@
-# AgroID - API de Inteligência para Monitoramento Agrícola (GS Java Advanced)
+# AgroID - Monitoramento Agrícola Inteligente
 
-Esta é a API principal do ecossistema AgroID, desenvolvida em **Spring Boot 3.2.5** com banco de dados **Oracle**. Ela atua como a camada de inteligência orquestradora entre os dispositivos físicos de medição IoT (ESP32) e o aplicativo móvel do usuário final (React Native).
+![GitHub repo size](https://img.shields.io/github/repo-size/Gabriel-Maciel06/GSJava?style=for-the-badge&color=brightgreen)
+![GitHub language count](https://img.shields.io/github/languages/count/Gabriel-Maciel06/GSJava?style=for-the-badge&color=blue)
+![GitHub forks](https://img.shields.io/github/forks/Gabriel-Maciel06/GSJava?style=for-the-badge&color=orange)
+![GitHub open issues](https://img.shields.io/github/issues/Gabriel-Maciel06/GSJava?style=for-the-badge&color=red)
+![GitHub open pull requests](https://img.shields.io/github/issues-pr/Gabriel-Maciel06/GSJava?style=for-the-badge&color=purple)
 
----
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Java 21**
-- **Spring Boot 3.2.5**
-  - **Spring Web** & **Spring HATEOAS** (APIs RESTful com hipermídia)
-  - **Spring Data JPA** (Persistência e modelagem avançada)
-  - **Spring Security** (Autenticação e Autorização)
-  - **Spring Boot Validation** (Validações via annotations)
-- **Auth0 java-jwt** (Criação e decodificação de Tokens JWT)
-- **Springdoc OpenAPI / Swagger** (Documentação interativa da API)
-- **Oracle SQL & PL/SQL** (Estruturas relacionais e lógica de negócio em banco)
+> O AgroID é uma API REST desenvolvida em Spring Boot e integrada ao banco Oracle que serve como a camada inteligente de orquestração entre dispositivos IoT (ESP32) e o aplicativo mobile (React Native) para controle de irrigação.
 
 ---
 
-## 🗄️ Modelagem de Banco de Dados (Oracle)
+## 🛠️ Ajustes e melhorias
 
-O banco de dados é composto por **6 tabelas principais**, sequências e visões de relatórios, localizados em `db/db_setup.sql` e `db/db_procedures.sql`.
+O projeto está com a base consolidada e as próximas atualizações serão voltadas para as seguintes tarefas:
 
-### Tabelas Físicas
-1. **`TB_USUARIO`**: Armazena dados de perfis de acesso (`USER`, `ESP32`, `ADMIN`), nomes, e-mails e senhas criptografadas.
-2. **`TB_PROPRIEDADE`**: Representa as áreas de plantio, contendo nome, localização e tamanho em hectares.
-3. **`TB_SENSOR`**: Contém tipo (`UMIDADE` ou `LUMINOSIDADE`), modelo e status do sensor. Mapeia a hierarquia de herança no Java.
-4. **`TB_LEITURA`**: Tabela de histórico bruto de medições enviadas pelo ESP32. Implementa chave primária composta `(id_sensor, data_leitura)`.
-5. **`TB_ALERTA`**: Tabela de registro de alertas gerados pela API ou por procedimentos PL/SQL.
-6. **`TB_SATELITE_DADOS`**: Armazena dados de clima e previsões coletadas remotamente por satélite.
+- [ ] Integração em tempo real de atuadores físicos de irrigação (retransmissão de comandos da API para o ESP32)
+- [ ] Envio de notificações push para o aplicativo mobile quando alertas críticos forem gerados
+- [ ] Implementação de dashboards gráficos adicionais de telemetria no painel do usuário
+- [ ] Otimização dos algoritmos de IA preditivos para análise climática por satélite
+- [ ] Criação de testes automatizados ponta a ponta (E2E) para toda a esteira de endpoints
 
 ---
 
-## ⚙️ Regras de PL/SQL Implementadas
+## 💻 Pré-requisitos
 
-As seguintes lógicas foram portadas diretamente para o banco de dados Oracle para otimização analítica:
-- **`PROC_RELATORIO_RISCO` (Cursor Explícito)**: Percorre todas as propriedades com umidade atual abaixo de 20% e gera logs automáticos na tabela `TB_ALERTA`.
-- **`PROC_CALCULAR_MEDIA_24H` (Loop & Decisão)**: Procedure que calcula a umidade média das últimas 24 horas para cada propriedade. Caso o valor esteja abaixo de 40%, gera alertas preventivos.
-- **`PROC_INSERIR_LEITURA` (Tratamento de Exceções)**: Garante a inserção segura de leituras de sensores no banco, tratando violações de integridade (`FOREIGN KEY` inválida ou chave primária duplicada) via blocos `EXCEPTION`.
-- **Visões de Relatórios (JOINs)**:
-  - **`VW_PERFORMANCE_PROPRIEDADE`**: Agrupa dados de usuários, propriedades e leituras trazendo a performance (média, máxima e mínima) das áreas.
-  - **`VW_SENSORES_SEM_LEITURA_RECENTE`**: Identifica sensores inativos ou sem comunicação há mais de 1 hora via `LEFT JOIN`.
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
----
-
-## 🔒 Segurança e Perfis de Acesso (Spring Security + JWT)
-
-A API possui dois fluxos de autenticação independentes protegidos por JWT:
-1. **ESP32 (Perfil `ESP32`)**: Endpoint de recebimento de leituras (`POST /api/leituras`) requer token JWT de longa duração associado à role `ROLE_ESP32`.
-2. **Mobile App (Perfil `USER`)**: Endpoints de listagem, cadastro e relatórios (`/api/areas/**`, `/api/sensores/**`, etc.) requerem autenticação tradicional do usuário via JWT com role `ROLE_USER`.
+* Você instalou a versão mais recente do **Java 21 ou superior** (necessário para rodar o Spring Boot).
+* Você possui o gerenciador de dependências **Maven 3.8+** instalado.
+* Você possui uma máquina **Windows, macOS ou Linux** compatível com a execução de ambientes Java.
+* Você configurou uma instância local ou remota de banco de dados **Oracle SQL** ativa.
 
 ---
 
-## 🔗 HATEOAS (Hipermídia)
+## 🚀 Instalando o AgroID
 
-Ao listar ou consultar as Áreas de Plantio/Propriedades (`/api/areas`), o JSON de retorno inclui links hipermídia dinâmicos:
-- **`self`**: Link direto para os detalhes da propriedade consultada.
-- **`sensores`**: Link direto que direciona para a lista de sensores e histórico daquela área (`/api/areas/{id}/sensores`), permitindo navegação fluida pelo App Mobile.
+Para instalar e configurar o projeto localmente, siga estas etapas:
 
----
+### Linux, macOS e Windows:
 
-## 🛑 Validação e Erros Globais
-
-- Utilização de `@Valid` nos DTOs de entrada.
-- Restrições físicas: Leituras de sensores de umidade menores que `0%` ou maiores que `100%` são interceptadas dinamicamente e bloqueadas.
-- **`ControllerAdvice`**: Tratamento global de exceções, retornando respostas padronizadas em JSON contendo timestamp, código HTTP, tipo do erro, mensagem amigável e caminho da requisição.
-
----
-
-## 🚀 Como Executar o Projeto
-
-1. **Scripts SQL**: Execute os arquivos `db/db_setup.sql` e `db/db_procedures.sql` no seu console/IDE do banco Oracle.
-2. **Configuração**: Atualize a conexão JDBC no arquivo `src/main/resources/application.properties` com suas credenciais.
-3. **Build e Testes**:
+1. Clone o repositório utilizando a sua chave/token de acesso:
    ```bash
-   mvn clean compile
-   mvn test
+   git clone https://github.com/Gabriel-Maciel06/GSJava.git
    ```
-4. **Execução**:
+2. Acesse a pasta do projeto:
+   ```bash
+   cd GSJava
+   ```
+3. Instale as dependências e compile o projeto:
+   ```bash
+   mvn clean install
+   ```
+
+---
+
+## ☕ Usando o AgroID
+
+Para usar a aplicação e iniciar os serviços locais:
+
+1. Certifique-se de configurar as credenciais do seu banco Oracle no arquivo `src/main/resources/application.properties`.
+2. Rode a aplicação utilizando o comando Maven:
    ```bash
    mvn spring-boot:run
    ```
-   A API estará rodando por padrão na porta `8080`.
+3. A API estará acessível em `http://localhost:8080`.
+4. Você pode visualizar a documentação interativa do Swagger acessando `http://localhost:8080/swagger-ui.html`.
+
+---
+
+## 📫 Contribuindo para o AgroID
+
+Para contribuir com o AgroID, siga estas etapas:
+
+1. Bifurque este repositório.
+2. Crie um branch com sua funcionalidade: `git checkout -b minha-nova-funcionalidade`.
+3. Faça suas alterações e confirme-as com mensagens claras: `git commit -m "feat: adicionar nova funcionalidade"`.
+4. Envie para o branch original: `git push origin minha-nova-funcionalidade`.
+5. Crie a solicitação de pull (Pull Request) no GitHub.
+
+---
+
+## 🤝 Colaboradores
+
+Agradecemos às seguintes pessoas que contribuíram para este projeto acadêmico:
+
+| [<img src="https://github.com/Gabriel-Maciel06.png" width="100px;" alt="Foto do Gabriel Maciel"/><br><sub><b>Gabriel Maciel</b></sub>](https://github.com/Gabriel-Maciel06) | [<img src="https://avatars.githubusercontent.com/u/14902636?v=4" width="100px;" alt="Foto da Vitória Rodrigues"/><br><sub><b>Vitória Rodrigues</b></sub>](#) | [<img src="https://avatars.githubusercontent.com/u/1903332?v=4" width="100px;" alt="Foto do Augusto Bonomo"/><br><sub><b>Augusto Bonomo</b></sub>](#) |
+| :---: | :---: | :---: |
+| **RM562795** | **RM565160** | **RM565155** |
+
+| [<img src="https://avatars.githubusercontent.com/u/120023?v=4" width="100px;" alt="Foto do Thomas Fontes"/><br><sub><b>Thomas Fontes</b></sub>](#) | [<img src="https://avatars.githubusercontent.com/u/104104?v=4" width="100px;" alt="Foto do Matheus Molina"/><br><sub><b>Matheus Molina</b></sub>](#) |
+| :---: | :---: |
+| **RM562254** | **RM563399** |
+
+---
+
+## 📝 Licença
+
+Este projeto está sob licença acadêmica da FIAP. Veja o arquivo de licença para mais detalhes.
