@@ -47,10 +47,10 @@ public class TokenService {
 
     private Instant genExpirationDate(String perfil) {
         if ("ESP32".equalsIgnoreCase(perfil)) {
-            // Token para o dispositivo IoT expira em 1 ano
-            return LocalDateTime.now().plusDays(365).toInstant(ZoneOffset.of("-03:00"));
+            // Token para o dispositivo IoT expira em 365 dias
+            return Instant.now().plus(java.time.Duration.ofDays(365));
         }
         // Token para usuários normais expira em 2 horas
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return Instant.now().plus(java.time.Duration.ofHours(2));
     }
 }
