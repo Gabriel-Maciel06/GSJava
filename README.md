@@ -115,7 +115,7 @@ A aplicação segue a **Arquitetura em Camadas (Layered Architecture)** com sepa
 | Banco de Dados | Oracle SQL (ojdbc11) | — |
 | Segurança | Spring Security + JWT (Auth0 java-jwt) | 4.4.0 |
 | Validação | Spring Validation (Bean Validation 3.0) | — |
-| Produtividade | Lombok | 1.18.32 |
+| Produtividade | Lombok | 1.18.46 |
 | Dev Tools | Spring Boot DevTools | — |
 | Documentação | Springdoc OpenAPI (Swagger UI) | 2.3.0 |
 | Build | Apache Maven | 3.8+ |
