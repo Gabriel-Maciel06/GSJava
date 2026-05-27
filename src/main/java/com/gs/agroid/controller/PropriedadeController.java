@@ -57,6 +57,19 @@ public class PropriedadeController {
         return ResponseEntity.ok(sensores);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PropriedadeResponseDto> update(@PathVariable Long id, @RequestBody @Valid PropriedadeRequestDto dto) {
+        PropriedadeResponseDto response = propriedadeService.update(id, dto);
+        addHateoasLinks(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        propriedadeService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     private void addHateoasLinks(PropriedadeResponseDto dto) {
         // Link para obter detalhes da própria propriedade
         dto.add(linkTo(methodOn(PropriedadeController.class).findById(dto.getId())).withSelfRel());

@@ -69,6 +69,29 @@ public class SensorService {
         return convertToDto(sensor);
     }
 
+    @Transactional
+    public SensorResponseDto update(Long id, SensorRequestDto dto) {
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor não encontrado com ID: " + id));
+
+        Propriedade propriedade = propriedadeRepository.findById(dto.propriedadeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Propriedade não encontrada com ID: " + dto.propriedadeId()));
+
+        sensor.setModelo(dto.modelo());
+        sensor.setStatus(dto.status().toUpperCase());
+        sensor.setPropriedade(propriedade);
+
+        sensor = sensorRepository.save(sensor);
+        return convertToDto(sensor);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor não encontrado com ID: " + id));
+        sensorRepository.delete(sensor);
+    }
+
     public SensorResponseDto convertToDto(Sensor s) {
         return SensorResponseDto.builder()
                 .id(s.getId())

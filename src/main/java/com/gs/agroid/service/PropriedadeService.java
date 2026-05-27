@@ -60,6 +60,30 @@ public class PropriedadeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public PropriedadeResponseDto update(Long id, PropriedadeRequestDto dto) {
+        Propriedade propriedade = propriedadeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Propriedade não encontrada com ID: " + id));
+
+        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário proprietário não encontrado com ID: " + dto.usuarioId()));
+
+        propriedade.setNome(dto.nome());
+        propriedade.setLocalizacao(dto.localizacao());
+        propriedade.setTamanho(dto.tamanho());
+        propriedade.setUsuario(usuario);
+
+        propriedade = propriedadeRepository.save(propriedade);
+        return convertToDto(propriedade);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Propriedade propriedade = propriedadeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Propriedade não encontrada com ID: " + id));
+        propriedadeRepository.delete(propriedade);
+    }
+
     public PropriedadeResponseDto convertToDto(Propriedade p) {
         return PropriedadeResponseDto.builder()
                 .id(p.getId())

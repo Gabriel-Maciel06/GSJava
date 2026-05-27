@@ -44,4 +44,16 @@ public class SensorController {
     public ResponseEntity<List<LeituraResponseDto>> getLeituras(@PathVariable Long id) {
         return ResponseEntity.ok(leituraService.findBySensor(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SensorResponseDto> update(@PathVariable Long id, @RequestBody @Valid SensorRequestDto dto) {
+        SensorResponseDto response = sensorService.update(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        sensorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
