@@ -2,6 +2,7 @@ package com.gs.agroid.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "TB_PROPRIEDADE")
@@ -24,7 +25,7 @@ public class Propriedade {
     private String localizacao;
 
     @Column(name = "tamanho", nullable = false, precision = 10, scale = 2)
-    private Double tamanho;
+    private BigDecimal tamanho;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)

@@ -2,16 +2,16 @@ package com.gs.agroid.dto;
 
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SensorResponseDto extends RepresentationModel<SensorResponseDto> {
+public class AlertaResponseDto extends RepresentationModel<AlertaResponseDto> {
     private Long id;
-    private String tipoSensor;
-    private String modelo;
-    private String status;
+    private String mensagem;
+    private LocalDateTime timestamp;
     private Long propriedadeId;
 }

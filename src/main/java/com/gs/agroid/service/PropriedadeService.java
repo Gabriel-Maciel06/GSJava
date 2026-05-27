@@ -7,7 +7,9 @@ import com.gs.agroid.model.Propriedade;
 import com.gs.agroid.model.Usuario;
 import com.gs.agroid.repository.PropriedadeRepository;
 import com.gs.agroid.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PropriedadeService {
 
-    @Autowired
-    private PropriedadeRepository propriedadeRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final PropriedadeRepository propriedadeRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Transactional
     public PropriedadeResponseDto create(PropriedadeRequestDto dto) {
@@ -40,10 +40,9 @@ public class PropriedadeService {
     }
 
     @Transactional(readOnly = true)
-    public List<PropriedadeResponseDto> findAll() {
-        return propriedadeRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public Page<PropriedadeResponseDto> findAll(Pageable pageable) {
+        return propriedadeRepository.findAll(pageable)
+                .map(this::convertToDto);
     }
 
     @Transactional(readOnly = true)

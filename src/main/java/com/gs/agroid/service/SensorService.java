@@ -6,7 +6,9 @@ import com.gs.agroid.exception.ResourceNotFoundException;
 import com.gs.agroid.model.*;
 import com.gs.agroid.repository.PropriedadeRepository;
 import com.gs.agroid.repository.SensorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SensorService {
 
-    @Autowired
-    private SensorRepository sensorRepository;
-
-    @Autowired
-    private PropriedadeRepository propriedadeRepository;
+    private final SensorRepository sensorRepository;
+    private final PropriedadeRepository propriedadeRepository;
 
     @Transactional
     public SensorResponseDto create(SensorRequestDto dto) {
@@ -49,10 +49,9 @@ public class SensorService {
     }
 
     @Transactional(readOnly = true)
-    public List<SensorResponseDto> findAll() {
-        return sensorRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public Page<SensorResponseDto> findAll(Pageable pageable) {
+        return sensorRepository.findAll(pageable)
+                .map(this::convertToDto);
     }
 
     @Transactional(readOnly = true)

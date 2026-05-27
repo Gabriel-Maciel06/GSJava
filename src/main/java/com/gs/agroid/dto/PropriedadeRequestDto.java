@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.math.BigDecimal;
 
 public record PropriedadeRequestDto(
     @NotBlank(message = "O nome da propriedade é obrigatório.")
@@ -16,7 +17,7 @@ public record PropriedadeRequestDto(
 
     @NotNull(message = "O tamanho da propriedade é obrigatório.")
     @Min(value = 0, message = "O tamanho deve ser maior ou igual a zero.")
-    Double tamanho,
+    BigDecimal tamanho,
 
     @NotNull(message = "O ID do usuário proprietário é obrigatório.")
     Long usuarioId

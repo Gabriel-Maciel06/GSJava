@@ -629,44 +629,56 @@ Quando a `LeituraService` recebe uma leitura de umidade **abaixo de 20%**, o mé
 
 ### 🌾 Propriedades (`/api/areas`)
 
-| Método | Endpoint | Acesso | Descrição | HATEOAS |
-|--------|----------|--------|-----------|---------|
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
 | `POST` | `/api/areas` | 🔒 USER/ADMIN | Cria nova propriedade | ✅ self + sensores |
-| `GET` | `/api/areas` | 🔒 USER/ADMIN | Lista todas propriedades | ✅ CollectionModel |
+| `GET` | `/api/areas` | 🔒 USER/ADMIN | Lista propriedades (paginado) | ✅ PagedModel (self, next, prev) |
 | `GET` | `/api/areas/{id}` | 🔒 USER/ADMIN | Busca por ID | ✅ self + sensores |
-| `GET` | `/api/areas/{id}/sensores` | 🔒 USER/ADMIN | Sensores da área | — |
+| `GET` | `/api/areas/{id}/sensores` | 🔒 USER/ADMIN | Sensores da área | ✅ HATEOAS individual |
 | `PUT` | `/api/areas/{id}` | 🔒 USER/ADMIN | Atualiza propriedade | ✅ self + sensores |
 | `DELETE` | `/api/areas/{id}` | 🔒 USER/ADMIN | Remove (cascata) | — |
 
 ### 📡 Sensores (`/api/sensores`)
 
-| Método | Endpoint | Acesso | Descrição |
-|--------|----------|--------|-----------|
-| `POST` | `/api/sensores` | 🔒 USER/ADMIN | Cadastra sensor (UMIDADE ou LUMINOSIDADE) |
-| `GET` | `/api/sensores` | 🔒 USER/ADMIN | Lista todos sensores |
-| `GET` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Busca sensor por ID |
-| `GET` | `/api/sensores/{id}/leituras` | 🔒 USER/ADMIN | Histórico de leituras do sensor |
-| `PUT` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Atualiza sensor |
-| `DELETE` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Remove sensor |
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
+| `POST` | `/api/sensores` | 🔒 USER/ADMIN | Cadastra sensor (UMIDADE/LUMINOSIDADE) | ✅ self + leituras + propriedade |
+| `GET` | `/api/sensores` | 🔒 USER/ADMIN | Lista todos sensores (paginado) | ✅ PagedModel (self, next, prev) |
+| `GET` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Busca sensor por ID | ✅ self + leituras + propriedade |
+| `GET` | `/api/sensores/{id}/leituras` | 🔒 USER/ADMIN | Histórico de leituras (paginado) | ✅ PagedModel + HATEOAS |
+| `PUT` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Atualiza sensor | ✅ self + leituras + propriedade |
+| `DELETE` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Remove sensor | — |
 
 ### 📊 Leituras (`/api/leituras`)
 
-| Método | Endpoint | Acesso | Descrição |
-|--------|----------|--------|-----------|
-| `POST` | `/api/leituras` | 🔒 **ESP32** | Envia leitura do sensor (dispara irrigação se umidade < 20%) |
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
+| `POST` | `/api/leituras` | 🔒 **ESP32** | Envia leitura (irrigação se umidade < 20%) | ✅ self + sensor |
+| `GET` | `/api/leituras` | 🔒 USER/ADMIN | Busca leitura por chave composta (query params) | ✅ self + sensor |
+| `PUT` | `/api/leituras` | 🔒 USER/ADMIN | Atualiza valor da leitura (query params) | ✅ self + sensor |
+| `DELETE` | `/api/leituras` | 🔒 USER/ADMIN | Remove leitura (query params) | — |
 
 ### ⚠️ Alertas (`/api/alertas`)
 
-| Método | Endpoint | Acesso | Descrição |
-|--------|----------|--------|-----------|
-| `GET` | `/api/alertas/propriedade/{id}` | 🔒 USER/ADMIN | Lista alertas da propriedade |
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
+| `POST` | `/api/alertas` | 🔒 USER/ADMIN | Cria novo alerta manualmente | ✅ self + propriedade |
+| `GET` | `/api/alertas` | 🔒 USER/ADMIN | Lista todos os alertas (paginado) | ✅ PagedModel (self, next, prev) |
+| `GET` | `/api/alertas/{id}` | 🔒 USER/ADMIN | Busca alerta por ID | ✅ self + propriedade |
+| `GET` | `/api/alertas/propriedade/{id}` | 🔒 USER/ADMIN | Alertas da propriedade (paginado) | ✅ PagedModel + HATEOAS |
+| `PUT` | `/api/alertas/{id}` | 🔒 USER/ADMIN | Atualiza dados do alerta | ✅ self + propriedade |
+| `DELETE` | `/api/alertas/{id}` | 🔒 USER/ADMIN | Remove alerta | — |
 
 ### 🛰️ Satélite (`/api/satelite`)
 
-| Método | Endpoint | Acesso | Descrição |
-|--------|----------|--------|-----------|
-| `POST` | `/api/satelite` | 🔒 USER/ADMIN | Cadastra dados climáticos |
-| `GET` | `/api/satelite/regiao/{regiao}` | 🔒 USER/ADMIN | Busca dados por região |
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
+| `POST` | `/api/satelite` | 🔒 USER/ADMIN | Cadastra dados climáticos | ✅ self |
+| `GET` | `/api/satelite` | 🔒 USER/ADMIN | Lista todos dados climáticos (paginado) | ✅ PagedModel (self, next, prev) |
+| `GET` | `/api/satelite/{id}` | 🔒 USER/ADMIN | Busca dados climáticos por ID | ✅ self |
+| `GET` | `/api/satelite/regiao/{regiao}` | 🔒 USER/ADMIN | Dados por região (paginado) | ✅ PagedModel + HATEOAS |
+| `PUT` | `/api/satelite/{id}` | 🔒 USER/ADMIN | Atualiza dados climáticos | ✅ self |
+| `DELETE` | `/api/satelite/{id}` | 🔒 USER/ADMIN | Remove dados climáticos | — |
 
 ### 📚 Documentação
 

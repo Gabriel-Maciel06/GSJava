@@ -2,6 +2,7 @@ package com.gs.agroid.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "TB_LEITURA")
@@ -20,5 +21,5 @@ public class Leitura {
     private Sensor sensor;
 
     @Column(name = "valor", nullable = false, precision = 10, scale = 2)
-    private Double valor;
+    private BigDecimal valor;
 }

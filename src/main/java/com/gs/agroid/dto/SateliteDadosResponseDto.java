@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LeituraResponseDto extends RepresentationModel<LeituraResponseDto> {
-    private Long sensorId;
+public class SateliteDadosResponseDto extends RepresentationModel<SateliteDadosResponseDto> {
+    private Long id;
+    private BigDecimal umidadePrevista;
+    private String clima;
+    private String regiao;
     private LocalDateTime timestamp;
-    private BigDecimal valor;
 }

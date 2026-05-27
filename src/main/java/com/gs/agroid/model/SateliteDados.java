@@ -2,7 +2,7 @@ package com.gs.agroid.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,7 +20,7 @@ public class SateliteDados {
     private Long id;
 
     @Column(name = "umidade_prevista", nullable = false, precision = 5, scale = 2)
-    private Double umidadePrevista;
+    private BigDecimal umidadePrevista;
 
     @Column(name = "clima", nullable = false, length = 50)
     private String clima;

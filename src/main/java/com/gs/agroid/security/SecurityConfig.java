@@ -1,6 +1,6 @@
 package com.gs.agroid.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,18 +13,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,9 +40,13 @@ public class SecurityConfig {
 
                         // Endpoint do ESP32 para receber leituras brutas (requer JWT com papel ESP32)
                         .requestMatchers(HttpMethod.POST, "/api/leituras").hasRole("ESP32")
+                        // Endpoints de CRUD de leituras para usuários normais/admin
+                        .requestMatchers(HttpMethod.GET, "/api/leituras").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/leituras").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/leituras").hasAnyRole("USER", "ADMIN")
 
                         // Endpoints consumidos pelo App Mobile ou Web
-                        .requestMatchers("/api/propriedades/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/areas/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/sensores/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/alertas/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/satelite/**").hasAnyRole("USER", "ADMIN")
