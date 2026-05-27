@@ -860,10 +860,28 @@ mvn spring-boot:run
 
 ## ☁️ Deploy e Link Público
 
-A API está configurada com:
-- **CORS habilitado** para acesso externo de qualquer origem
-- **Swagger/OpenAPI** disponível publicamente nos endpoints de documentação
-- **`ddl-auto=none`** para evitar alterações automáticas no schema em produção
+A aplicação está totalmente preparada para deploy em containers Docker (através do [Dockerfile](file:///Users/gabrieloliveira/Desktop/Agentes-cloud/GSJava/Dockerfile) multi-stage na raiz).
+
+### 🚀 Link Público da API
+> [!NOTE]
+> Adicione aqui a URL do seu deploy assim que subir para a nuvem!
+> - **URL de Produção**: `https://agroid-api.onrender.com` (Exemplo)
+> - **Swagger UI de Produção**: `https://agroid-api.onrender.com/swagger-ui.html`
+
+### 🛠️ Como fazer o Deploy em 3 Passos (Render ou Railway)
+1. **Conecte seu Repositório**:
+   - Crie uma conta no **Render** (render.com) ou **Railway** (railway.app).
+   - Clique em **New Web Service** e conecte seu repositório do GitHub: `https://github.com/Gabriel-Maciel06/GSJava.git`.
+2. **Configure o Ambiente**:
+   - Selecione a opção **Docker** como runtime (a plataforma detectará e compilará o projeto automaticamente usando o `Dockerfile`).
+3. **Configure as Variáveis de Ambiente**:
+   - Adicione as seguintes chaves nas configurações do serviço:
+     - `SPRING_DATASOURCE_URL` = A URL de conexão da FIAP ou do seu banco Oracle na nuvem.
+     - `SPRING_DATASOURCE_USERNAME` = O usuário do banco.
+     - `SPRING_DATASOURCE_PASSWORD` = A senha do banco.
+     - `JWT_SECRET` = Uma chave de segurança longa para assinatura dos tokens.
+
+A API está com **CORS habilitado** e **`ddl-auto=none`** ativa, garantindo segurança na integridade das tabelas do Oracle em produção.
 
 ---
 
