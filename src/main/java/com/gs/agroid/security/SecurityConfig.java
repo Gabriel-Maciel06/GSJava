@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/sensores/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/alertas/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/satelite/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/atuadores/**").hasAnyRole("USER", "ADMIN")
 
                         .anyRequest().authenticated()
                 )

@@ -635,7 +635,8 @@ Quando a `LeituraService` recebe uma leitura de umidade **abaixo de 20%**, o mé
 | `GET` | `/api/areas` | 🔒 USER/ADMIN | Lista propriedades (paginado) | ✅ PagedModel (self, next, prev) |
 | `GET` | `/api/areas/{id}` | 🔒 USER/ADMIN | Busca por ID | ✅ self + sensores |
 | `GET` | `/api/areas/{id}/sensores` | 🔒 USER/ADMIN | Sensores da área | ✅ HATEOAS individual |
-| `PUT` | `/api/areas/{id}` | 🔒 USER/ADMIN | Atualiza propriedade | ✅ self + sensores |
+| `GET` | `/api/areas/{id}/atuadores` | 🔒 USER/ADMIN | Atuadores da área | ✅ HATEOAS individual |
+| `PUT` | `/api/areas/{id}` | 🔒 USER/ADMIN | Atualiza propriedade | ✅ self + sensores + atuadores |
 | `DELETE` | `/api/areas/{id}` | 🔒 USER/ADMIN | Remove (cascata) | — |
 
 ### 📡 Sensores (`/api/sensores`)
@@ -648,6 +649,17 @@ Quando a `LeituraService` recebe uma leitura de umidade **abaixo de 20%**, o mé
 | `GET` | `/api/sensores/{id}/leituras` | 🔒 USER/ADMIN | Histórico de leituras (paginado) | ✅ PagedModel + HATEOAS |
 | `PUT` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Atualiza sensor | ✅ self + leituras + propriedade |
 | `DELETE` | `/api/sensores/{id}` | 🔒 USER/ADMIN | Remove sensor | — |
+
+### 🎛️ Atuadores (`/api/atuadores`)
+
+| Método | Endpoint | Acesso | Descrição | HATEOAS / Paginação |
+|--------|----------|--------|-----------|---------------------|
+| `POST` | `/api/atuadores` | 🔒 USER/ADMIN | Cadastra atuador (BOMBA_AGUA/VALVULA_SOLENOIDE/ASPERSOR) | ✅ self + propriedade + toggle |
+| `GET` | `/api/atuadores` | 🔒 USER/ADMIN | Lista todos atuadores (paginado) | ✅ PagedModel (self, next, prev) |
+| `GET` | `/api/atuadores/{id}` | 🔒 USER/ADMIN | Busca atuador por ID | ✅ self + propriedade + toggle |
+| `PUT` | `/api/atuadores/{id}` | 🔒 USER/ADMIN | Atualiza atuador | ✅ self + propriedade + toggle |
+| `PATCH` | `/api/atuadores/{id}/toggle` | 🔒 USER/ADMIN | Alterna estado (LIGADO/DESLIGADO) | ✅ self + propriedade + toggle |
+| `DELETE` | `/api/atuadores/{id}` | 🔒 USER/ADMIN | Remove atuador | — |
 
 ### 📊 Leituras (`/api/leituras`)
 
