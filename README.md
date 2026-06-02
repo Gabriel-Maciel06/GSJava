@@ -147,7 +147,7 @@ classDiagram
         -Long id
         -String nome
         -String localizacao
-        -Double tamanho
+        -BigDecimal tamanho
         -Usuario usuario
     }
     note for Propriedade "Tabela: TB_PROPRIEDADE\ntamanho em hectares"
@@ -172,6 +172,16 @@ classDiagram
     }
     note for SensorLuminosidade "DiscriminatorValue: LUMINOSIDADE"
 
+    class Atuador {
+        -Long id
+        -String tipoAtuador
+        -String modelo
+        -String status
+        -String estadoAtual
+        -Propriedade propriedade
+    }
+    note for Atuador "Tabela: TB_ATUADOR\ntipoAtuador: BOMBA_AGUA | VALVULA_SOLENOIDE | ASPERSOR"
+
     class LeituraId {
         <<Embeddable>>
         -Long sensorId
@@ -182,7 +192,7 @@ classDiagram
     class Leitura {
         -LeituraId id
         -Sensor sensor
-        -Double valor
+        -BigDecimal valor
     }
     note for Leitura "Tabela: TB_LEITURA\nPK: (id_sensor + data_leitura)"
 
@@ -196,7 +206,7 @@ classDiagram
 
     class SateliteDados {
         -Long id
-        -Double umidadePrevista
+        -BigDecimal umidadePrevista
         -String clima
         -String regiao
         -LocalDateTime timestamp
@@ -205,6 +215,7 @@ classDiagram
 
     Usuario "1" --> "*" Propriedade : possui
     Propriedade "1" --> "*" Sensor : contém
+    Propriedade "1" --> "*" Atuador : controla
     Propriedade "1" --> "*" Alerta : recebe
     Sensor <|-- SensorUmidade : herda
     Sensor <|-- SensorLuminosidade : herda
@@ -265,8 +276,18 @@ erDiagram
         TIMESTAMP data_coleta
     }
 
+    TB_ATUADOR {
+        NUMBER id_atuador PK
+        VARCHAR2 tipo_atuador "CHECK: BOMBA_AGUA, VALVULA_SOLENOIDE, ASPERSOR"
+        VARCHAR2 modelo
+        VARCHAR2 status "CHECK: ATIVO, INATIVO"
+        VARCHAR2 estado_atual "CHECK: LIGADO, DESLIGADO"
+        NUMBER id_propriedade FK
+    }
+
     TB_USUARIO ||--o{ TB_PROPRIEDADE : "possui"
     TB_PROPRIEDADE ||--o{ TB_SENSOR : "contém"
+    TB_PROPRIEDADE ||--o{ TB_ATUADOR : "controla"
     TB_PROPRIEDADE ||--o{ TB_ALERTA : "recebe"
     TB_SENSOR ||--o{ TB_LEITURA : "registra"
 ```
@@ -278,6 +299,7 @@ erDiagram
 | `SEQ_USUARIO` | TB_USUARIO | 1 | 1 |
 | `SEQ_PROPRIEDADE` | TB_PROPRIEDADE | 1 | 1 |
 | `SEQ_SENSOR` | TB_SENSOR | 1 | 1 |
+| `SEQ_ATUADOR` | TB_ATUADOR | 1 | 1 |
 | `SEQ_ALERTA` | TB_ALERTA | 1 | 1 |
 | `SEQ_SATELITE` | TB_SATELITE_DADOS | 1 | 1 |
 
