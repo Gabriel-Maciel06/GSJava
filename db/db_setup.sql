@@ -29,16 +29,17 @@ END;
 
 -- 1. TB_USUARIO
 CREATE TABLE TB_USUARIO (
-    id_usuario NUMBER(19) PRIMARY KEY,
+    id_usuario NUMBER(19) DEFAULT SEQ_USUARIO.NEXTVAL PRIMARY KEY,
     nome VARCHAR2(100) NOT NULL,
     email VARCHAR2(100) UNIQUE NOT NULL,
     senha VARCHAR2(255) NOT NULL,
-    perfil VARCHAR2(20) NOT NULL CONSTRAINT chk_usuario_perfil CHECK (perfil IN ('USER', 'ESP32', 'ADMIN'))
+    perfil VARCHAR2(20) NOT NULL CONSTRAINT chk_usuario_perfil CHECK (perfil IN ('USER', 'ESP32', 'ADMIN')),
+    ativo NUMBER(1) DEFAULT 1 NOT NULL
 );
 
 -- 2. TB_PROPRIEDADE
 CREATE TABLE TB_PROPRIEDADE (
-    id_propriedade NUMBER(19) PRIMARY KEY,
+    id_propriedade NUMBER(19) DEFAULT SEQ_PROPRIEDADE.NEXTVAL PRIMARY KEY,
     nome VARCHAR2(100) NOT NULL,
     localizacao VARCHAR2(255) NOT NULL,
     tamanho NUMBER(10, 2) NOT NULL, -- em hectares
@@ -48,7 +49,7 @@ CREATE TABLE TB_PROPRIEDADE (
 
 -- 3. TB_SENSOR
 CREATE TABLE TB_SENSOR (
-    id_sensor NUMBER(19) PRIMARY KEY,
+    id_sensor NUMBER(19) DEFAULT SEQ_SENSOR.NEXTVAL PRIMARY KEY,
     tipo_sensor VARCHAR2(50) NOT NULL CONSTRAINT chk_sensor_tipo CHECK (tipo_sensor IN ('UMIDADE', 'LUMINOSIDADE')),
     modelo VARCHAR2(100) NOT NULL,
     status VARCHAR2(20) NOT NULL CONSTRAINT chk_sensor_status CHECK (status IN ('ATIVO', 'INATIVO')),
@@ -58,7 +59,7 @@ CREATE TABLE TB_SENSOR (
 
 -- 4. TB_ATUADOR (Dispositivos Atuadores IoT - Bomba de água, Solenoide, Aspersor)
 CREATE TABLE TB_ATUADOR (
-    id_atuador NUMBER(19) PRIMARY KEY,
+    id_atuador NUMBER(19) DEFAULT SEQ_ATUADOR.NEXTVAL PRIMARY KEY,
     tipo_atuador VARCHAR2(50) NOT NULL CONSTRAINT chk_atuador_tipo CHECK (tipo_atuador IN ('BOMBA_AGUA', 'VALVULA_SOLENOIDE', 'ASPERSOR')),
     modelo VARCHAR2(100) NOT NULL,
     status VARCHAR2(20) NOT NULL CONSTRAINT chk_atuador_status CHECK (status IN ('ATIVO', 'INATIVO')),
@@ -78,7 +79,7 @@ CREATE TABLE TB_LEITURA (
 
 -- 6. TB_ALERTA (Registros de alarmes disparados por leituras críticas)
 CREATE TABLE TB_ALERTA (
-    id_alerta NUMBER(19) PRIMARY KEY,
+    id_alerta NUMBER(19) DEFAULT SEQ_ALERTA.NEXTVAL PRIMARY KEY,
     mensagem VARCHAR2(255) NOT NULL,
     data_alerta TIMESTAMP NOT NULL,
     id_propriedade NUMBER(19) NOT NULL,
@@ -87,7 +88,7 @@ CREATE TABLE TB_ALERTA (
 
 -- 7. TB_SATELITE_DADOS (Dados climáticos capturados via satélite para análise)
 CREATE TABLE TB_SATELITE_DADOS (
-    id_satelite NUMBER(19) PRIMARY KEY,
+    id_satelite NUMBER(19) DEFAULT SEQ_SATELITE.NEXTVAL PRIMARY KEY,
     umidade_prevista NUMBER(5, 2) NOT NULL,
     clima VARCHAR2(50) NOT NULL,
     regiao VARCHAR2(100) NOT NULL,
