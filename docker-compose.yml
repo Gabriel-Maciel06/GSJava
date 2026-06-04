@@ -40,7 +40,7 @@ services:
 
 volumes:
   oracle_data:
-    name: oracle_data_volume
+    name: oracle_data_volume_gsjava
 
 networks:
   agroid_network:
