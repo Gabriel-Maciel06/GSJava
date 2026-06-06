@@ -95,7 +95,7 @@ public class PropriedadeController {
 
         // Link apontando diretamente para os atuadores daquela área (/areas/{id}/atuadores)
         dto.add(linkTo(methodOn(PropriedadeController.class).getAtuadoresByArea(dto.getId())).withRel("atuadores"));
-     }
+    }
 
     private void addSensorHateoasLinks(SensorResponseDto dto) {
         dto.add(linkTo(methodOn(SensorController.class).findById(dto.getId())).withSelfRel());
