@@ -1,5 +1,8 @@
 -- Scripts PL/SQL para Lógicas de Negócio e Relatórios Analíticos no Oracle
 
+ALTER SESSION SET CONTAINER = FREEPDB1;
+ALTER SESSION SET CURRENT_SCHEMA = RM562795;
+
 -- Habilitar a saída do DBMS_OUTPUT para fins de depuração
 SET SERVEROUTPUT ON;
 
